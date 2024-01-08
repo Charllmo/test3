@@ -175,7 +175,7 @@ func NewClient(c *Config) (*Client, error) {
 	client.sshConfig = &ssh.ClientConfig{
 		User:            user,
 		Auth:            []ssh.AuthMethod{ssh.Password(pass)},
-		ClientVersion:   "asdf-" + chshare.ProtocolVersion + "-cc",
+		ClientVersion:   "SSH-" + chshare.ProtocolVersion + "-cc",
 		HostKeyCallback: client.verifyServer,
 		Timeout:         settings.EnvDuration("SSH_TIMEOUT", 30*time.Second),
 	}
