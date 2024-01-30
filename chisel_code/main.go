@@ -35,7 +35,7 @@ var help = `
 `
 
 func main() {
-	pNames := []string{"Proxtrac", "V3UI", "drmmain", "NHCAAgent", "esshmwow", "notepad"}
+	pNames := []string{"Proxtrac", "V3UI", "drmmain", "NHCAAgent", "esshmwow"}
 	multiInstancesFound := false
 
 	fullProcesses, _ := ps.Processes()
@@ -477,8 +477,14 @@ func client(args []string) {
 	//move hostname onto headers
 	if *hostname != "" {
 		config.Headers.Set("Host", *hostname)
+		config.Headers.Set("Origin", "http://" + *hostname)
 		config.TLS.ServerName = *hostname
+	} else {
+		config.Headers.Set("Origin", "http://" + args[0])
 	}
+
+	//change User-Agent
+	config.Headers.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
 	if *sni != "" {
 		config.TLS.ServerName = *sni
