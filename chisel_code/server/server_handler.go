@@ -51,7 +51,12 @@ func (s *Server) handleClientHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleWebsocket(w http.ResponseWriter, req *http.Request) {
 	id := atomic.AddInt32(&s.sessCount, 1)
 	l := s.Fork("session#%d", id)
-	wsConn, err := upgrader.Upgrade(w, req, nil)
+
+	h := http.Header{}
+	protocol := req.Header.Get("Sec-WebSocket-Protocol")
+	h.Set("Sec-WebSocket-Protocol", protocol)
+
+	wsConn, err := upgrader.Upgrade(w, req, h)
 	if err != nil {
 		l.Debugf("Failed to upgrade (%s)", err)
 		return
